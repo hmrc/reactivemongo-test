@@ -40,9 +40,9 @@ object HmrcBuild extends Build {
 object Dependencies {
 
   object Compile {
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4"
-    val pegdown = "org.pegdown" % "pegdown" % "1.5.0"
-    val simpleReactiveMongo = "uk.gov.hmrc" %% "simple-reactivemongo" % "3.1.0" % "provided"
+    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4" % "provided"
+    val pegdown = "org.pegdown" % "pegdown" % "1.5.0" % "provided"
+    val simpleReactiveMongo = "uk.gov.hmrc" %% "simple-reactivemongo" % "3.1.1" % "provided"
     val playJson = "com.typesafe.play" %% "play-json" % "2.3.9" % "provided"
   }
 
