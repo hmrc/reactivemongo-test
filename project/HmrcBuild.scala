@@ -41,8 +41,8 @@ object Dependencies {
   object Compile {
     val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4" % "provided"
     val pegdown = "org.pegdown" % "pegdown" % "1.5.0" % "provided"
-    val simpleReactiveMongo = "uk.gov.hmrc" %% "simple-reactivemongo" % "4.2.1" % "provided"
-    val playJson = "com.typesafe.play" %% "play-json" % "2.3.10" % "provided"
+    val simpleReactiveMongo = "uk.gov.hmrc" %% "simple-reactivemongo" % "4.3.0"
+    val playJson = "com.typesafe.play" %% "play-json" % "2.3.10"
   }
 
   sealed abstract class Test(scope: String) {
