@@ -4,6 +4,10 @@
 
 Test library for reactivemongo
 
+### FailOnUnIndexedQueries
+
+Mixing this trait into your spec will trigger test failure if un-indexed queries are executed. This is achieved by activating Mongo's `notablescan`
+option before running the spec (and turning it off afterwards).
 
 ### Installing
 
