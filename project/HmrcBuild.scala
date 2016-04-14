@@ -5,8 +5,6 @@ import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object HmrcBuild extends Build {
 
-  import uk.gov.hmrc.DefaultBuildSettings
-  import DefaultBuildSettings._
   import SbtAutoBuildPlugin._
 
   val nameApp = "reactivemongo-test"
