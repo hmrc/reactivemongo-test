@@ -13,7 +13,7 @@ object HmrcBuild extends Build {
       "org.scalatest"     %% "scalatest"            % "2.2.6" % "provided",
       "org.pegdown"       %  "pegdown"              % "1.6.0" % "provided",
       "com.typesafe.play" %% "play-json"            % "2.5.8" % "provided",
-      "uk.gov.hmrc"       %% "simple-reactivemongo" % "5.1.0"
+      "uk.gov.hmrc"       %% "simple-reactivemongo" % "999"
     )
 
 
