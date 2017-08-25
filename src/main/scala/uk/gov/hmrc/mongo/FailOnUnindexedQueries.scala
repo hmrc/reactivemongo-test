@@ -18,13 +18,13 @@ trait FailOnUnindexedQueries extends BeforeAndAfterAll with ScalaFutures {
 
   override protected def beforeAll() = {
     super.beforeAll()
-    mongo().connection.db(databaseName).drop().futureValue
-    mongo().connection.db("admin").command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1))).futureValue
+    mongo().connection.database(databaseName).map(_.drop()).futureValue
+    mongo().connection.database("admin").map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1)))).futureValue
   }
 
   override protected def afterAll() = {
     super.afterAll()
-    mongo().connection.db("admin").command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0))).futureValue
+    mongo().connection.database("admin").map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0)))).futureValue
   }
 
   abstract override def withFixture(test: NoArgTest): Outcome = {
