@@ -4,7 +4,7 @@ val nameApp = "reactivemongo-test"
 lazy val root = Project(nameApp, file("."))
   .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
   .settings(
-    scalaVersion        := "2.11.7",
+    scalaVersion        := "2.11.12",
     crossScalaVersions  := Seq("2.11.12", "2.12.6"),
     libraryDependencies ++= dependencies,
     resolvers           :=
