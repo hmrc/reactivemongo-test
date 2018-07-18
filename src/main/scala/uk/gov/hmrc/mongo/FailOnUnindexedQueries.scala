@@ -1,6 +1,5 @@
 package uk.gov.hmrc.mongo
 
-
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{BeforeAndAfterAll, Failed, Outcome, Suite}
 import reactivemongo.api.DefaultDB
@@ -16,22 +15,27 @@ trait FailOnUnindexedQueries extends BeforeAndAfterAll with ScalaFutures {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
-  override protected def beforeAll() = {
+  override protected def beforeAll(): Unit = {
     super.beforeAll()
     mongo().connection.database(databaseName).map(_.drop()).futureValue
-    mongo().connection.database("admin").map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1)))).futureValue
+    mongo().connection
+      .database("admin")
+      .map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1))))
+      .futureValue
   }
 
-  override protected def afterAll() = {
+  override protected def afterAll(): Unit = {
     super.afterAll()
-    mongo().connection.database("admin").map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0)))).futureValue
+    mongo().connection
+      .database("admin")
+      .map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0))))
+      .futureValue
   }
 
-  abstract override def withFixture(test: NoArgTest): Outcome = {
+  abstract override def withFixture(test: NoArgTest): Outcome =
     super.withFixture(test) match {
       case Failed(e: ReactiveMongoException) if e.getMessage() contains "No query solutions" =>
         Failed("Mongo query could not be satisfied by an index:\n" + e.getMessage())
       case other => other
     }
-  }
 }

@@ -11,11 +11,10 @@ object HmrcBuild extends Build {
   val appDependencies =
     Seq(
       "org.scalatest"     %% "scalatest"            % "2.2.6" % "provided",
-      "org.pegdown"       %  "pegdown"              % "1.6.0" % "provided",
+      "org.pegdown"       % "pegdown"               % "1.6.0" % "provided",
       "com.typesafe.play" %% "play-json"            % "2.5.8" % "provided",
       "uk.gov.hmrc"       %% "simple-reactivemongo" % "6.1.0"
     )
-
 
   lazy val simpleReactiveMongo = Project(nameApp, file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
