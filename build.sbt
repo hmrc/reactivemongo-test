@@ -16,8 +16,7 @@ lazy val root = Project(nameApp, file("."))
 
 val dependencies =
   Seq(
-    "org.scalatest"     %% "scalatest"            % "2.2.6",
-    "org.pegdown"       % "pegdown"               % "1.6.0",
-    "com.typesafe.play" %% "play-json"            % "2.5.8",
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "6.1.0"
+    "org.scalatest"     %% "scalatest"               % "3.0.4",
+    "org.pegdown"       % "pegdown"                  % "1.6.0",
+    "uk.gov.hmrc"       %% "simple-reactivemongo-26" % "0.6.0"
   )
