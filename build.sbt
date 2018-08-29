@@ -3,7 +3,11 @@ import sbt.PlayCrossCompilation._
 val nameApp = "reactivemongo-test"
 
 lazy val root = Project(nameApp, file("."))
-  .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
+  .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+  .settings(
+    majorVersion                     := 3,
+    makePublicallyAvailableOnBintray := true
+  )
   .settings(
     scalaVersion        := "2.11.12",
     crossScalaVersions  := Seq("2.11.12", "2.12.6"),
