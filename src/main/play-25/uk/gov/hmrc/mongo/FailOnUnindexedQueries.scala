@@ -17,14 +17,14 @@
 package uk.gov.hmrc.mongo
 
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{BeforeAndAfterAll, Failed, Outcome, Suite}
+import org.scalatest._
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.BSONDocument
 import reactivemongo.core.commands.RawCommand
 import reactivemongo.core.errors.ReactiveMongoException
 
-trait FailOnUnindexedQueries extends BeforeAndAfterAll with ScalaFutures {
-  this: Suite =>
+trait FailOnUnindexedQueries extends BeforeAndAfterAll with ScalaFutures with TestSuiteMixin {
+  this: TestSuite =>
 
   def mongo: () => DefaultDB
   protected def databaseName: String
