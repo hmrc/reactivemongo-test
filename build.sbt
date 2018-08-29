@@ -5,7 +5,7 @@ val nameApp = "reactivemongo-test"
 lazy val root = Project(nameApp, file("."))
   .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
   .settings(
-    majorVersion                     := 3,
+    majorVersion                     := 4,
     makePublicallyAvailableOnBintray := true
   )
   .settings(
