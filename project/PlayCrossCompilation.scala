@@ -19,9 +19,16 @@ object PlayCrossCompilation {
   private val releaseSuffix, playDir =
     if (playVersion == Play25) "play-25" else "play-26"
 
+  private def updateVersion(v: String): String =
+    if (v.endsWith("-SNAPSHOT")) {
+      v.stripSuffix("-SNAPSHOT") + "-" + releaseSuffix + "-SNAPSHOT"
+    } else {
+      v + "-" + releaseSuffix
+    }
+
   def apply() = Seq(
-    version ~= {
-      _ + "-" + releaseSuffix // handle -SNAPSHOT versions + migrate to new build + copy failOnUnindexedQueiresSpec
+    version ~= { v =>
+      updateVersion(v)
     },
     unmanagedSourceDirectories in Compile += {
       (sourceDirectory in Compile).value / playDir
