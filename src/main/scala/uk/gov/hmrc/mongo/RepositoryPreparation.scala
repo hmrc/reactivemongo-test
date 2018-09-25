@@ -25,16 +25,33 @@ trait RepositoryPreparation extends Awaiting {
     val db = repo.collection.db.name + "." + repo.collection.name
 
     println(s"Dropping '$db'")
-    await(repo.drop.recover {
-      case _ => fail(s"Failed to drop '$db'")
-    })
+    await {
+      repo.drop.recover {
+        case _ => fail(s"Failed to drop '$db'")
+      }
+    }
 
     println(s"Applying indexes on '$db'")
-    await(repo.ensureIndexes.recover {
-      case _ => fail(s"Failed to ensureIndexes on '$db'")
-    })
+    await {
+      repo.ensureIndexes.recover {
+        case _ => fail(s"Failed to ensureIndexes on '$db'")
+      }
+    }
 
     repo
   }
+}
 
+trait Awaiting {
+
+  import scala.concurrent._
+  import scala.concurrent.duration._
+  import scala.language.postfixOps
+
+  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
+
+  val timeout: FiniteDuration = 5 seconds
+
+  def await[A](future: Future[A])(implicit timeout: Duration = timeout): A =
+    Await.result(future, timeout)
 }

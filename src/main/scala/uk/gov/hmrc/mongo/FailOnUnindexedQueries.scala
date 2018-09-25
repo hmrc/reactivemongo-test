@@ -16,36 +16,38 @@
 
 package uk.gov.hmrc.mongo
 
+import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{BeforeAndAfterAll, Failed, Outcome, Suite}
-import reactivemongo.api.DefaultDB
+import reactivemongo.api.commands.Command
+import reactivemongo.api.{BSONSerializationPack, DefaultDB, FailoverStrategy, ReadPreference}
 import reactivemongo.bson.BSONDocument
-import reactivemongo.core.commands.RawCommand
 import reactivemongo.core.errors.ReactiveMongoException
 
-trait FailOnUnindexedQueries extends BeforeAndAfterAll with ScalaFutures {
-  this: Suite =>
+trait FailOnUnindexedQueries extends BeforeAndAfterAll with ScalaFutures with TestSuiteMixin {
+  this: TestSuite =>
 
   def mongo: () => DefaultDB
   protected def databaseName: String
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
+  private val commandRunner = Command.run(BSONSerializationPack, FailoverStrategy())
+
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     mongo().connection.database(databaseName).map(_.drop()).futureValue
-    mongo().connection
-      .database("admin")
-      .map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1))))
-      .futureValue
+    commandRunner(
+      db      = mongo().connection.database("admin").futureValue,
+      command = commandRunner.rawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1))
+    ).one[BSONDocument](ReadPreference.primaryPreferred).futureValue
   }
 
   override protected def afterAll(): Unit = {
     super.afterAll()
-    mongo().connection
-      .database("admin")
-      .map(_.command(RawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0))))
-      .futureValue
+    commandRunner(
+      db      = mongo().connection.database("admin").futureValue,
+      command = commandRunner.rawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0))
+    ).one[BSONDocument](ReadPreference.primaryPreferred).futureValue
   }
 
   abstract override def withFixture(test: NoArgTest): Outcome =
