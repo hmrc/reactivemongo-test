@@ -51,7 +51,9 @@ class RepositoryPreparationSpec extends WordSpec with MongoSpecSupport with Befo
     Writes[JsValue](identity)
   )
 
-  private lazy val repository = new ReactiveRepository[JsValue, BSONObjectID](databaseName, mongo, jsObjectFormat) {
+  private lazy val collectionName = "test-collection"
+
+  private lazy val repository = new ReactiveRepository[JsValue, BSONObjectID](collectionName, mongo, jsObjectFormat) {
     override def indexes: Seq[Index] = Seq(
       Index(Seq("field" -> IndexType.Ascending))
     )
@@ -61,6 +63,6 @@ class RepositoryPreparationSpec extends WordSpec with MongoSpecSupport with Befo
 
   override protected def afterAll(): Unit = {
     super.afterAll()
-    dropTestCollection()
+    dropTestCollection(collectionName)
   }
 }

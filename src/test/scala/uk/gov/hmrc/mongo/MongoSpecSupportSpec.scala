@@ -54,31 +54,30 @@ class MongoSpecSupportSpec extends WordSpec with MongoSpecSupport with ScalaFutu
     }
 
     "provide a 'bsonCollection' method to return BSONCollection with the given name" in {
-      val collection = bsonCollection(databaseName)()
+      val collection = bsonCollection(collectionName)()
 
       collection      shouldBe a[BSONCollection]
-      collection.name shouldBe databaseName
+      collection.name shouldBe collectionName
     }
 
-    "provide a 'dropTestCollection' method to delete a collection created by the MongoSpecSupport" in {
+    "provide a 'dropTestCollection' method to delete a collection with the given name" in {
       testCollection.insert(BSONDocument("property" -> "value")).futureValue
       testCollection.find(BSONDocument(), projection = None).one.futureValue should not be empty
 
       testCollection      shouldBe a[BSONCollection]
-      testCollection.name shouldBe databaseName
+      testCollection.name shouldBe collectionName
 
-      dropTestCollection()
+      dropTestCollection(collectionName)
 
       testCollection.find(BSONDocument(), projection = None).one.futureValue shouldBe empty
     }
-
-    "provide a 'testCollection' method to access a collection created by the MongoSpecSupport" in {
-      testCollection.name shouldBe bsonCollection(databaseName)().name
-    }
   }
+
+  private lazy val collectionName = "test-collection"
+  private lazy val testCollection = bsonCollection(collectionName)()
 
   override protected def afterAll(): Unit = {
     super.afterAll()
-    dropTestCollection()
+    dropTestCollection(collectionName)
   }
 }

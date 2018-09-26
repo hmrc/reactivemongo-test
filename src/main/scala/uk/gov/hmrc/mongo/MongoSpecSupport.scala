@@ -22,23 +22,18 @@ import reactivemongo.api.{DefaultDB, FailoverStrategy}
 trait MongoSpecSupport {
 
   protected val databaseName: String = "test-" + this.getClass.getSimpleName
+  protected val mongoUri: String     = s"mongodb://127.0.0.1:27017/$databaseName"
 
-  protected val mongoUri: String = s"mongodb://127.0.0.1:27017/$databaseName"
-
-  implicit val mongoConnectorForTest: MongoConnector = MongoConnector(mongoUri)
-
-  implicit val mongo: () => DefaultDB = mongoConnectorForTest.db
+  implicit lazy val mongoConnectorForTest: MongoConnector = MongoConnector(mongoUri)
+  implicit val mongo: () => DefaultDB                     = mongoConnectorForTest.db
 
   def bsonCollection(name: String)(
     failoverStrategy: FailoverStrategy = mongoConnectorForTest.helper.db.failoverStrategy): BSONCollection =
     mongoConnectorForTest.helper.db(name, failoverStrategy)
 
-  def dropTestCollection(): Unit = new Awaiting {
+  def dropTestCollection(collectionName: String): Unit = new Awaiting {
     await {
-      bsonCollection(databaseName)().drop(failIfNotFound = false)
+      bsonCollection(collectionName)().drop(failIfNotFound = false)
     }
   }
-
-  lazy val testCollection: BSONCollection = bsonCollection(databaseName)()
-
 }

@@ -35,7 +35,10 @@ val compileDependencies: Seq[ModuleID] = dependencies(
 )
 
 val testDependencies: Seq[ModuleID] = dependencies(
-  shared = Seq(
-    "log4j"             % "log4j"                 % "1.2.17" % Test
+  play25 = Seq(
+    "ch.qos.logback" % "logback-classic" % "1.1.2" % Test
+  ),
+  play26 = Seq(
+    "ch.qos.logback" % "logback-classic" % "1.2.3" % Test
   )
 )

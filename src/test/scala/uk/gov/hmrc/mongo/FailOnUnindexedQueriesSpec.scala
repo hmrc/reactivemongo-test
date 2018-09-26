@@ -74,9 +74,10 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
 
     def maybeNotableScanValue: Option[Boolean] = await {
       for {
-        adminDb <- testCollection.db.connection.database("admin")
-        maybeNotableScanValue <- runner(adminDb,
-                                        runner.rawCommand(BSONDocument("getParameter" -> 1, "notablescan" -> 1)))
+        adminDb <- mongo().connection.database("admin")
+        maybeNotableScanValue <- runner(
+                                  adminDb,
+                                  runner.rawCommand(BSONDocument("getParameter" -> 1, "notablescan" -> 1)))
                                   .one[BSONDocument](ReadPreference.primaryPreferred)
                                   .map(_.get("notablescan"))
                                   .map(_.map(toBoolean))
@@ -89,8 +90,11 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
     }
   }
 
+  private lazy val collectionName = "test-collection"
+  private lazy val testCollection = bsonCollection(collectionName)()
+
   override protected def afterAll(): Unit = {
     super.afterAll()
-    dropTestCollection()
+    dropTestCollection(collectionName)
   }
 }
