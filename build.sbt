@@ -10,7 +10,7 @@ lazy val root = Project(libName, file("."))
   )
   .settings(
     scalaVersion        := "2.11.12",
-    crossScalaVersions  := Seq("2.11.12", "2.12.6"),
+    crossScalaVersions  := Seq("2.11.12"),
     libraryDependencies ++= compileDependencies ++ testDependencies,
     resolvers           := Seq(
       Resolver.bintrayRepo("hmrc", "releases"),
@@ -27,10 +27,10 @@ val compileDependencies: Seq[ModuleID] = dependencies(
     "org.scalatest"     %% "scalatest"            % "3.0.5"
   ),
   play25 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % s"$simpleReactiveMongoVersion-play-25-SNAPSHOT"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % s"$simpleReactiveMongoVersion-play-25"
   ),
   play26 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % s"$simpleReactiveMongoVersion-play-26-SNAPSHOT"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % s"$simpleReactiveMongoVersion-play-26"
   )
 )
 
