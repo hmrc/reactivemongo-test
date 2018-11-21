@@ -62,14 +62,14 @@ class MongoSpecSupportSpec extends WordSpec with MongoSpecSupport with ScalaFutu
 
     "provide a 'dropTestCollection' method to delete a collection with the given name" in {
       testCollection.insert(BSONDocument("property" -> "value")).futureValue
-      testCollection.find(BSONDocument(), projection = None).one.futureValue should not be empty
+      testCollection.find(BSONDocument()).one.futureValue should not be empty
 
       testCollection      shouldBe a[BSONCollection]
       testCollection.name shouldBe collectionName
 
       dropTestCollection(collectionName)
 
-      testCollection.find(BSONDocument(), projection = None).one.futureValue shouldBe empty
+      testCollection.find(BSONDocument()).one.futureValue shouldBe empty
     }
   }
 

@@ -19,18 +19,16 @@ lazy val root = Project(libName, file("."))
     playCrossCompilationSettings
   )
 
-val simpleReactiveMongoVersion = "7.0.0"
-
 val compileDependencies: Seq[ModuleID] = dependencies(
   shared = Seq(
     "org.pegdown"       % "pegdown"               % "1.6.0",
     "org.scalatest"     %% "scalatest"            % "3.0.5"
   ),
   play25 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % s"$simpleReactiveMongoVersion-play-25"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.4.0-play-25"
   ),
   play26 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % s"$simpleReactiveMongoVersion-play-26"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.4.0-play-26"
   )
 )
 

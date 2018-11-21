@@ -34,7 +34,7 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
       testCollection.insert(BSONDocument("unidexed" -> "value")).futureValue
 
       intercept[DetailedDatabaseException] {
-        await(testCollection.find(BSONDocument("unidexed" -> "value"), projection = None).one)
+        await(testCollection.find(BSONDocument("unidexed" -> "value")).one)
       }.getMessage() should include("No query solutions")
     }
 
@@ -46,7 +46,7 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
       testCollection.insert(BSONDocument("indexed" -> "value")).futureValue
 
       await {
-        testCollection.find(BSONDocument("indexed" -> "value"), projection = None).one
+        testCollection.find(BSONDocument("indexed" -> "value")).one
       } should not be empty
     }
   }
