@@ -18,6 +18,6 @@ resolvers += Resolver.bintrayRepo("hmrc", "releases")
 
 libraryDependencies += "uk.gov.hmrc" %% "reactivemongo-test" % "[INSERT_VERSION]"
 ```
-* *For Play 2.6.x use versions <=4.0.0-play-26*
-* *For Play 2.5.x use versions <=4.0.0-play-25*
+* *For Play 2.6.x use versions <=4.7.0-play-26*
+* *For Play 2.5.x use versions <=4.7.0-play-25*
 * *For Java 7 and Play 2.3.x use versions <=1.1.0*
