@@ -24,8 +24,6 @@ import reactivemongo.api.{BSONSerializationPack, FailoverStrategy, ReadPreferenc
 import reactivemongo.bson.{BSONBoolean, BSONDocument, BSONValue}
 import reactivemongo.core.errors.DetailedDatabaseException
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries with MongoSpecSupport with Awaiting {
 
   "FailOnUnindexedQueries" should {
