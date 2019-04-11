@@ -36,7 +36,7 @@ class MongoSpecSupportSpec extends WordSpec with MongoSpecSupport with ScalaFutu
     }
 
     "construct 'mongoUri' using the 'mongodb://127.0.0.1:27017/<databaseName>' pattern" in {
-      mongoUri shouldBe s"mongodb://127.0.0.1:27017/$databaseName"
+      mongoUri shouldBe s"mongodb://127.0.0.1:27017/$databaseName?rm.monitorRefreshMS=1000&rm.failover=default"
     }
 
     "make MongoConnector implicitly available in the class extending the trait" in {
