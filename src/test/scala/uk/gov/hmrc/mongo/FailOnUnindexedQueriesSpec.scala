@@ -29,7 +29,7 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
   "FailOnUnindexedQueries" should {
 
     "cause an exception be thrown when a query on unindexed property is performed" in {
-      testCollection.insert(BSONDocument("unidexed" -> "value")).futureValue
+      testCollection.insert(ordered = false).one(BSONDocument("unidexed" -> "value")).futureValue
 
       intercept[DetailedDatabaseException] {
         await(testCollection.find(BSONDocument("unidexed" -> "value"), projection = None).one)
@@ -41,7 +41,7 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
         testCollection.indexesManager.create(Index(Seq("indexed" -> IndexType.Ascending)))
       }
 
-      testCollection.insert(BSONDocument("indexed" -> "value")).futureValue
+      testCollection.insert(ordered = false).one(BSONDocument("indexed" -> "value")).futureValue
 
       await {
         testCollection.find(BSONDocument("indexed" -> "value"), projection = None).one
