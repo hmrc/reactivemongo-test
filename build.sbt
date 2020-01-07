@@ -25,10 +25,10 @@ val compileDependencies: Seq[ModuleID] = dependencies(
     "org.scalatest"     %% "scalatest"            % "3.0.5"
   ),
   play25 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.20.0-play-25"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.22.0-play-25"
   ),
   play26 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.20.0-play-26"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.22.0-play-26"
   )
 )
 
