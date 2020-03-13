@@ -1,6 +1,6 @@
 # reactivemongo-test
 
-[ ![Download](https://api.bintray.com/packages/hmrc/releases/reactivemongo-test/images/download.svg) ](https://bintray.com/hmrc/releases/reactivemongo-test/_latestVersion) [![Apache-2.0 license](http://img.shields.io/badge/license-Apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)  [![Build Status](https://travis-ci.org/hmrc/reactivemongo-test.svg)](https://travis-ci.org/hmrc/reactivemongo-test) 
+[ ![Download](https://api.bintray.com/packages/hmrc/releases/reactivemongo-test/images/download.svg) ](https://bintray.com/hmrc/releases/reactivemongo-test/_latestVersion) [![Apache-2.0 license](http://img.shields.io/badge/license-Apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)  [![Build Status](https://travis-ci.org/hmrc/reactivemongo-test.svg)](https://travis-ci.org/hmrc/reactivemongo-test)
 
 Test library for reactivemongo
 
@@ -18,6 +18,7 @@ resolvers += Resolver.bintrayRepo("hmrc", "releases")
 
 libraryDependencies += "uk.gov.hmrc" %% "reactivemongo-test" % "[INSERT_VERSION]"
 ```
-* *For Play 2.6.x use versions <=4.7.0-play-26*
-* *For Play 2.5.x use versions <=4.7.0-play-25*
+
+* *For Play 2.6.x (scala 2.11, 2.12) use versions 4.x.x-play-26*
+* *For Play 2.5.x (scala 2.11) use versions 4.x.x-play-25*
 * *For Java 7 and Play 2.3.x use versions <=1.1.0*
