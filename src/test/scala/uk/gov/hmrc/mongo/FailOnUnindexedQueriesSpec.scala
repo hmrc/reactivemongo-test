@@ -22,7 +22,7 @@ import reactivemongo.api.commands.Command
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.api.{BSONSerializationPack, FailoverStrategy, ReadPreference}
 import reactivemongo.bson.{BSONBoolean, BSONDocument, BSONValue}
-import reactivemongo.core.errors.DetailedDatabaseException
+import reactivemongo.core.errors.DatabaseException
 
 class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries with MongoSpecSupport with Awaiting {
 
@@ -31,7 +31,7 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
     "cause an exception be thrown when a query on unindexed property is performed" in {
       testCollection.insert(ordered = false).one(BSONDocument("unidexed" -> "value")).futureValue
 
-      intercept[DetailedDatabaseException] {
+      intercept[DatabaseException] {
         await(testCollection.find(BSONDocument("unidexed" -> "value"), projection = None).one)
       }.getMessage() should include("No query solutions")
     }
