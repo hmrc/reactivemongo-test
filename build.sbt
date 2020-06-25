@@ -4,6 +4,7 @@ val libName = "reactivemongo-test"
 
 lazy val root = Project(libName, file("."))
   .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+  .disablePlugins(JUnitXmlReportPlugin)
   .settings(
     makePublicallyAvailableOnBintray := true,
     majorVersion                     := 4
@@ -25,13 +26,13 @@ val compileDependencies: Seq[ModuleID] = dependencies(
     "org.scalatest"     %% "scalatest"            % "3.0.5"
   ),
   play25 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.26.0-play-25"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.29.0-play-25"
   ),
   play26 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.26.0-play-26"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.29.0-play-26"
   ),
   play27 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.26.0-play-27"
+    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.29.0-play-27"
   )
 )
 
