@@ -4,13 +4,12 @@ val libName = "reactivemongo-test"
 
 lazy val root = Project(libName, file("."))
   .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
-  .disablePlugins(JUnitXmlReportPlugin)
   .settings(
     makePublicallyAvailableOnBintray := true,
     majorVersion                     := 4
   )
   .settings(
-    scalaVersion        := "2.11.12",
+    scalaVersion        := "2.12.8",
     crossScalaVersions  := Seq("2.11.12", "2.12.8"),
     libraryDependencies ++= compileDependencies ++ testDependencies,
     resolvers           := Seq(
