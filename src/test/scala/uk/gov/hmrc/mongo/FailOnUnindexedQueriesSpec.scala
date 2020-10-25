@@ -38,7 +38,31 @@ class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries wi
 
     "cause no exception be thrown when a query on indexed property is performed" in {
       await {
-        testCollection.indexesManager.create(Index(Seq("indexed" -> IndexType.Ascending)))
+        testCollection.indexesManager.create(
+            Index(
+            key = Seq("indexed" -> IndexType.Ascending),
+            name = None,
+            unique = false,
+            background = false,
+            sparse = false,
+            expireAfterSeconds = None,
+            storageEngine = None,
+            weights = None,
+            defaultLanguage = None,
+            languageOverride = None,
+            textIndexVersion = None,
+            sphereIndexVersion = None,
+            bits = None,
+            min = None,
+            max = None,
+            bucketSize = None,
+            collation = None,
+            wildcardProjection = None,
+            version = None,
+            partialFilter = None,
+            options = BSONDocument.empty
+          )
+        )
       }
 
       testCollection.insert(ordered = false).one(BSONDocument("indexed" -> "value")).futureValue

@@ -20,7 +20,7 @@ import org.scalatest.Matchers._
 import org.scalatest.{BeforeAndAfterAll, WordSpec, WordSpecLike}
 import play.api.libs.json._
 import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
 class RepositoryPreparationSpec extends WordSpec with MongoSpecSupport with BeforeAndAfterAll {
 
@@ -46,16 +46,39 @@ class RepositoryPreparationSpec extends WordSpec with MongoSpecSupport with Befo
     }
   }
 
-  private lazy val jsObjectFormat = Format[JsValue](
-    Reads[JsValue](JsSuccess(_)),
-    Writes[JsValue](identity)
-  )
+  private lazy val jsObjectFormat = OFormat((x: JsValue) => x match {
+    case o: JsObject => JsSuccess(o)
+    case x => JsError(s"JsObject expected but found $x")
+  }, (o: JsObject) => o)
 
   private lazy val collectionName = "test-collection"
 
-  private lazy val repository = new ReactiveRepository[JsValue, BSONObjectID](collectionName, mongo, jsObjectFormat) {
-    override def indexes: Seq[Index] = Seq(
-      Index(Seq("field" -> IndexType.Ascending))
+  private lazy val repository = new ReactiveRepository[JsObject, BSONObjectID](collectionName, mongo, jsObjectFormat) {
+    override def indexes: Seq[Index.Default] = Seq(
+      Index(
+        key = Seq("field" -> IndexType.Ascending),
+        name = None,
+        unique = false,
+        background = false,
+        sparse = false,
+        expireAfterSeconds = None,
+        storageEngine = None,
+        weights = None,
+        defaultLanguage = None,
+        languageOverride = None,
+        textIndexVersion = None,
+        sphereIndexVersion = None,
+        bits = None,
+        min = None,
+        max = None,
+        bucketSize = None,
+        collation = None,
+        wildcardProjection = None,
+        version = None,
+        partialFilter = None,
+        options = BSONDocument.empty
+      )
+
     )
   }
 
