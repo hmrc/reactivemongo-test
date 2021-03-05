@@ -16,15 +16,20 @@
 
 package uk.gov.hmrc.mongo
 
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import reactivemongo.api.commands.Command
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.api.{BSONSerializationPack, FailoverStrategy, ReadPreference}
 import reactivemongo.bson.{BSONBoolean, BSONDocument, BSONValue}
 import reactivemongo.core.errors.DatabaseException
 
-class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries with MongoSpecSupport with Awaiting {
+class FailOnUnindexedQueriesSpec
+  extends AnyWordSpec
+     with Matchers
+     with FailOnUnindexedQueries
+     with MongoSpecSupport
+     with Awaiting {
 
   "FailOnUnindexedQueries" should {
 
