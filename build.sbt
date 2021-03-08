@@ -4,7 +4,7 @@ lazy val root = Project("reactivemongo-test", file("."))
   .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
   .settings(
     makePublicallyAvailableOnBintray := true,
-    majorVersion                     := 4
+    majorVersion                     := 5
   )
   .settings(
     scalaVersion        := "2.12.13",
