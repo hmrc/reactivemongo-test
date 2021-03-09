@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,18 @@
 
 package uk.gov.hmrc.mongo
 
-import org.scalatest.Matchers._
-import org.scalatest.{BeforeAndAfterAll, WordSpec, WordSpecLike}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.{AnyWordSpec, AnyWordSpecLike}
 import play.api.libs.json._
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONObjectID
 
-class RepositoryPreparationSpec extends WordSpec with MongoSpecSupport with BeforeAndAfterAll {
+class RepositoryPreparationSpec
+  extends AnyWordSpec
+     with Matchers
+     with MongoSpecSupport
+     with BeforeAndAfterAll {
 
   "prepare" should {
 
@@ -59,7 +64,7 @@ class RepositoryPreparationSpec extends WordSpec with MongoSpecSupport with Befo
     )
   }
 
-  private trait Setup extends WordSpecLike with RepositoryPreparation {}
+  private trait Setup extends AnyWordSpecLike with RepositoryPreparation {}
 
   override protected def afterAll(): Unit = {
     super.afterAll()

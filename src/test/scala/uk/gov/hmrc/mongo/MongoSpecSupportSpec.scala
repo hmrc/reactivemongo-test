@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,22 @@
 
 package uk.gov.hmrc.mongo
 
-import org.scalatest.Matchers._
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{BeforeAndAfterAll, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.bson.BSONDocument
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class MongoSpecSupportSpec extends WordSpec with MongoSpecSupport with ScalaFutures with BeforeAndAfterAll {
+class MongoSpecSupportSpec
+  extends AnyWordSpec
+     with Matchers
+     with MongoSpecSupport
+     with ScalaFutures
+     with BeforeAndAfterAll {
 
   self =>
 

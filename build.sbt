@@ -1,37 +1,32 @@
 import PlayCrossCompilation._
 
-val libName = "reactivemongo-test"
-
-lazy val root = Project(libName, file("."))
-  .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+lazy val root = Project("reactivemongo-test", file("."))
+  .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
   .settings(
     makePublicallyAvailableOnBintray := true,
-    majorVersion                     := 4
+    majorVersion                     := 5
   )
   .settings(
-    scalaVersion        := "2.12.8",
-    crossScalaVersions  := Seq("2.11.12", "2.12.8"),
+    scalaVersion        := "2.12.13",
     libraryDependencies ++= compileDependencies ++ testDependencies,
-    resolvers           := Seq(
-      Resolver.bintrayRepo("hmrc", "releases"),
-      Resolver.typesafeRepo("releases")
-    ),
+    resolvers           += Resolver.typesafeRepo("releases"),
     playCrossCompilationSettings
   )
 
 val compileDependencies: Seq[ModuleID] = dependencies(
   shared = Seq(
-    "org.pegdown"       % "pegdown"               % "1.6.0",
-    "org.scalatest"     %% "scalatest"            % "3.0.5"
-  ),
-  play25 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.30.0-play-25"
+    "org.scalatest"        %% "scalatest"            % "3.0.8", // version chosen for compatibility with scalatestplus-play (all play versions)
+    "org.scalatest"        %% "scalatest"            % "3.1.0"  % Test, //  we test with 3.1.0, but only export 3.0.8
+    "com.vladsch.flexmark" %  "flexmark-all"         % "0.36.8" % Test
   ),
   play26 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.30.0-play-26"
+    "uk.gov.hmrc"          %% "simple-reactivemongo" % "8.0.0-play-26"
   ),
   play27 = Seq(
-    "uk.gov.hmrc"       %% "simple-reactivemongo" % "7.30.0-play-27"
+    "uk.gov.hmrc"          %% "simple-reactivemongo" % "8.0.0-play-27"
+  ),
+  play28 = Seq(
+    "uk.gov.hmrc"          %% "simple-reactivemongo" % "8.0.0-play-28"
   )
 )
 

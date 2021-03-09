@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,71 +16,71 @@
 
 package uk.gov.hmrc.mongo
 
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import reactivemongo.api.commands.Command
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.api.{BSONSerializationPack, FailoverStrategy, ReadPreference}
 import reactivemongo.bson.{BSONBoolean, BSONDocument, BSONValue}
-import reactivemongo.core.errors.DatabaseException
 
-class FailOnUnindexedQueriesSpec extends WordSpec with FailOnUnindexedQueries with MongoSpecSupport with Awaiting {
+class FailOnUnindexedQueriesSpec
+  extends AnyWordSpec
+     with Matchers
+     with FailOnUnindexedQueries
+     with MongoSpecSupport
+     with ScalaFutures
+     with IntegrationPatience {
+
+  import scala.concurrent.ExecutionContext.Implicits.global
 
   "FailOnUnindexedQueries" should {
-
     "cause an exception be thrown when a query on unindexed property is performed" in {
       testCollection.insert(ordered = false).one(BSONDocument("unidexed" -> "value")).futureValue
 
-      intercept[DatabaseException] {
-        await(testCollection.find(BSONDocument("unidexed" -> "value"), projection = None).one)
-      }.getMessage() should include("No query solutions")
+      // we shouldn't get a match error on extracting the result
+      val NotableScanError(_) = testCollection.find(BSONDocument("unidexed" -> "value"), projection = None).one.failed.futureValue
     }
 
     "cause no exception be thrown when a query on indexed property is performed" in {
-      await {
-        testCollection.indexesManager.create(Index(Seq("indexed" -> IndexType.Ascending)))
-      }
+      testCollection.indexesManager.create(Index(Seq("indexed" -> IndexType.Ascending))).futureValue
 
       testCollection.insert(ordered = false).one(BSONDocument("indexed" -> "value")).futureValue
 
-      await {
-        testCollection.find(BSONDocument("indexed" -> "value"), projection = None).one
-      } should not be empty
+      testCollection.find(BSONDocument("indexed" -> "value"), projection = None).one.futureValue should not be empty
     }
   }
 
   "beforeAll" should {
-
-    "set parameter 'notablescan' on 'admin' database" in new BeforeAndAfterSetup {
+    "set parameter 'notablescan' on 'admin' database" in new ReadNotableScanValue {
       beforeAll()
       maybeNotableScanValue shouldBe Some(true)
     }
   }
 
   "afterAll" should {
-
-    "unset parameter 'notablescan' on 'admin' database" in new BeforeAndAfterSetup {
+    "unset parameter 'notablescan' on 'admin' database" in new ReadNotableScanValue {
       beforeAll()
       afterAll()
       maybeNotableScanValue shouldBe Some(false)
     }
   }
 
-  private trait BeforeAndAfterSetup {
+  private trait ReadNotableScanValue {
 
     private val runner = Command.run(BSONSerializationPack, FailoverStrategy())
 
-    def maybeNotableScanValue: Option[Boolean] = await {
-      for {
-        adminDb <- mongo().connection.database("admin")
-        maybeNotableScanValue <- runner(
-                                  adminDb,
-                                  runner.rawCommand(BSONDocument("getParameter" -> 1, "notablescan" -> 1)))
-                                  .one[BSONDocument](ReadPreference.primaryPreferred)
-                                  .map(_.get("notablescan"))
-                                  .map(_.map(toBoolean))
-      } yield maybeNotableScanValue
-    }
+    def maybeNotableScanValue: Option[Boolean] =
+      (for {
+         adminDb <- mongo().connection.database("admin")
+         maybeNotableScanValue <- runner(
+                                   adminDb,
+                                   runner.rawCommand(BSONDocument("getParameter" -> 1, "notablescan" -> 1)))
+                                   .one[BSONDocument](ReadPreference.primaryPreferred)
+                                   .map(_.get("notablescan"))
+                                   .map(_.map(toBoolean))
+       } yield maybeNotableScanValue
+      ).futureValue
 
     private val toBoolean: BSONValue => Boolean = {
       case BSONBoolean(boolean) => boolean
